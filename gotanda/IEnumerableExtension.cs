@@ -105,5 +105,14 @@ namespace gotanda{
 			}
 			return true;
 		}
+		
+		public static int Count<T>(this IEnumerable<T> collection, Predicate<T> func){
+			int result = 0;
+			foreach(var each in collection){
+				if(func(each))
+					++result;
+			}
+			return result;
+		}
 	}
 }
