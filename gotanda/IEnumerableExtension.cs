@@ -98,9 +98,25 @@ namespace gotanda{
 			return false;
 		}
 		
+		public static bool Any(this IEnumerable<bool> collection){
+			foreach(var each in collection){
+				if(each)
+					return true;
+			}
+			return false;
+		}
+		
 		public static bool All<T>(this IEnumerable<T> collection, Predicate<T> func){
 			foreach(var each in collection){
 				if(! func(each))
+					return false;
+			}
+			return true;
+		}
+		
+		public static bool All(this IEnumerable<bool> collection){
+			foreach(var each in collection){
+				if(! each)
 					return false;
 			}
 			return true;
@@ -113,6 +129,14 @@ namespace gotanda{
 					++result;
 			}
 			return result;
+		}
+		
+		public static T Find<T>(this IEnumerable<T> collection, Predicate<T> pred) where T : class{
+			foreach(var each in collection){
+				if(pred(each))
+					return each;
+			}
+			return null;
 		}
 	}
 }

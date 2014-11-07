@@ -14,5 +14,9 @@ namespace gotanda{
 		public static void SetPositionY(this Transform transform, float y){
 			transform.position = new Vector3(transform.position.x, y, transform.position.z);
 		}
+		
+		public static void SetLocalPosition2D(this Transform transform, float x, float y){
+			transform.localPosition = new Vector3(x, y, transform.localPosition.z);
+		}
 	}
 }
