@@ -15,5 +15,11 @@ namespace gotanda{
 		public static T Last<T>(this IList<T> list){
 			return list[list.Count - 1];
 		}
+
+		public static T? Sample<T>(this IList<T> list) where T : struct{
+			if(list.Count == 0)
+				return null;
+			return list[Random.Range(0, list.Count)];
+		}
 	}
 }

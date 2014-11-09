@@ -15,6 +15,13 @@ namespace gotanda{
 				++n;
 			}
 		}
+		
+		public static IEnumerable<int> ToIncluding(this int n, int to){
+			while(n <= to){
+				yield return n;
+				++n;
+			}
+		}
 
 		public static bool IsEven(this int n){
 			return n % 2 == 0;
