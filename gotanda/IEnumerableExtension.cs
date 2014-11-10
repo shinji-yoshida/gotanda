@@ -138,5 +138,19 @@ namespace gotanda{
 			}
 			return null;
 		}
+		
+		public static T? Max<T>(this IEnumerable<T> collection) where T : struct, IComparable<T>{
+			var iter = collection.GetEnumerator();
+			if(! iter.MoveNext())
+				return null;
+
+			var max = iter.Current;
+			while(iter.MoveNext()){
+				if(max.CompareTo(iter.Current) < 0)
+					max = iter.Current;
+			}
+
+			return max;
+		}
 	}
 }
