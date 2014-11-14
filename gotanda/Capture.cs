@@ -32,4 +32,29 @@ namespace gotanda{
 			return c.Callback();
 		}
 	}
+
+	public class Capture<T1,T2>{
+		T1 arg1;
+		T2 arg2;
+		
+		public T1 Arg1 {
+			get {
+				return arg1;
+			}
+		}
+
+		public T2 Arg2 {
+			get {
+				return arg2;
+			}
+		}
+		
+		public Action<T1,T2> Callback(){
+			return (arg1, arg2) => {this.arg1 = arg1; this.arg2 = arg2;};
+		}
+		
+		public static implicit operator Action<T1,T2>(Capture<T1,T2> c){
+			return c.Callback();
+		}
+	}
 }

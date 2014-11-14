@@ -131,6 +131,14 @@ namespace gotanda{
 			return result;
 		}
 		
+		public static int Count<T>(this IEnumerable<T> collection){
+			int result = 0;
+			foreach(var each in collection){
+				++result;
+			}
+			return result;
+		}
+		
 		public static T Find<T>(this IEnumerable<T> collection, Predicate<T> pred) where T : class{
 			foreach(var each in collection){
 				if(pred(each))
@@ -151,6 +159,18 @@ namespace gotanda{
 			}
 
 			return max;
+		}
+
+		public static string Join<T>(this IEnumerable<T> collection, string seperator){
+			var iter = collection.GetEnumerator();
+			var result = "";
+			if(! iter.MoveNext())
+				return result;
+			result += iter.Current.ToString();
+			while(iter.MoveNext())
+				result += seperator + iter.Current.ToString();
+
+			return result;
 		}
 	}
 }
