@@ -21,5 +21,9 @@ namespace gotanda{
 				return null;
 			return list[Random.Range(0, list.Count)];
 		}
+
+		public static IList<T> Copy<T>(this IList<T> list){
+			return new List<T>(list);
+		}
 	}
 }
