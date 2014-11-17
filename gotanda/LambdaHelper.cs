@@ -4,6 +4,12 @@ using System;
 
 namespace gotanda{
 	public class LambdaHelper {
-		public static readonly Action NullAction = ()=>{};
+		public static Action NullAction(){
+			return ()=>{};
+		}
+
+		public static Action<T> NullAction<T>(){
+			return (t)=>{};
+		}
 	}
 }
