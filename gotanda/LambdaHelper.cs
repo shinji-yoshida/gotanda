@@ -5,11 +5,13 @@ using System;
 namespace gotanda{
 	public class LambdaHelper {
 		public static Action NullAction(){
-			return ()=>{};
+			int saveFromAOT = 0;
+			return () => saveFromAOT.GetHashCode();
 		}
 
 		public static Action<T> NullAction<T>(){
-			return (t)=>{};
+			int saveFromAOT = 0;
+			return _ => saveFromAOT.GetHashCode();
 		}
 	}
 }
