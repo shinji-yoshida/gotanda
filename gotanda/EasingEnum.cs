@@ -4,7 +4,9 @@ using System.Collections;
 namespace gotanda{
 	[System.Serializable]
 	public enum EasingEnum{
-		Linear, QuadEaseIn, QuadEaseOut, BackEaseIn, BackEaseOut, BackEaseInOut, BackEaseOutIn,
+		Linear,
+		QuadEaseIn, QuadEaseOut, QuadEaseInOut, QuadEaseOutIn,
+		BackEaseIn, BackEaseOut, BackEaseInOut, BackEaseOutIn,
 		ElasticEaseIn, ElasticEaseOut, ElasticEaseInOut, ElasticEaseOutIn, BounceEaseIn, BounceEaseOut
 	}
 
@@ -15,10 +17,15 @@ namespace gotanda{
 			switch(self){
 			case EasingEnum.Linear:
 				return LinearNormalized;
+
 			case EasingEnum.QuadEaseIn:
 				return QuadEaseInNormalized;
 			case EasingEnum.QuadEaseOut:
 				return QuadEaseOutNormalized;
+			case EasingEnum.QuadEaseInOut:
+				return QuadEaseInOutNormalized;
+			case EasingEnum.QuadEaseOutIn:
+				return QuadEaseOutInNormalized;
 				
 			case EasingEnum.BackEaseIn:
 				return BackEaseInNormalized;
@@ -57,6 +64,14 @@ namespace gotanda{
 		
 		public static float QuadEaseOutNormalized(float progress){
 			return (float)Easing.QuadEaseOut(progress, 0, 1, 1);
+		}
+		
+		public static float QuadEaseInOutNormalized(float progress){
+			return (float)Easing.QuadEaseInOut(progress, 0, 1, 1);
+		}
+		
+		public static float QuadEaseOutInNormalized(float progress){
+			return (float)Easing.QuadEaseOutIn(progress, 0, 1, 1);
 		}
 		
 		public static float BackEaseInNormalized(float progress){

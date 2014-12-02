@@ -147,6 +147,14 @@ namespace gotanda{
 			return null;
 		}
 		
+		public static T? FindStruct<T>(this IEnumerable<T> collection, Predicate<T> pred) where T : struct{
+			foreach(var each in collection){
+				if(pred(each))
+					return each;
+			}
+			return null;
+		}
+		
 		public static T? Max<T>(this IEnumerable<T> collection) where T : struct, IComparable<T>{
 			var iter = collection.GetEnumerator();
 			if(! iter.MoveNext())
@@ -171,6 +179,13 @@ namespace gotanda{
 				result += seperator + iter.Current.ToString();
 
 			return result;
+		}
+
+		public static T Reduce<T>(this IEnumerable<T> collection, T init, Func<T, T, T> memoAndItemToReduced){
+			foreach(var each in collection){
+				init = memoAndItemToReduced(init, each);
+			}
+			return init;
 		}
 	}
 }
