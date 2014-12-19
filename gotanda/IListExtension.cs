@@ -16,9 +16,8 @@ namespace gotanda{
 			return list[list.Count - 1];
 		}
 
-		public static T? Sample<T>(this IList<T> list) where T : struct{
-			if(list.Count == 0)
-				return null;
+		public static T Sample<T>(this IList<T> list) {
+			Assertion._assert_(! list.IsEmpty());
 			return list[Random.Range(0, list.Count)];
 		}
 

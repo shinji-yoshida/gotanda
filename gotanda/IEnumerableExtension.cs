@@ -122,6 +122,14 @@ namespace gotanda{
 			return true;
 		}
 		
+		public static bool None<T>(this IEnumerable<T> collection, Predicate<T> func){
+			return ! Any(collection, func);
+		}
+		
+		public static bool None(this IEnumerable<bool> collection){
+			return ! Any(collection);
+		}
+		
 		public static int Count<T>(this IEnumerable<T> collection, Predicate<T> func){
 			int result = 0;
 			foreach(var each in collection){
@@ -180,12 +188,17 @@ namespace gotanda{
 
 			return result;
 		}
-
+		
 		public static T Reduce<T>(this IEnumerable<T> collection, T init, Func<T, T, T> memoAndItemToReduced){
 			foreach(var each in collection){
 				init = memoAndItemToReduced(init, each);
 			}
 			return init;
+		}
+
+		public static IEnumerable<T> Type<T>(this IEnumerator enumerator){
+			while(enumerator.MoveNext())
+				yield return (T) enumerator.Current;
 		}
 	}
 }
