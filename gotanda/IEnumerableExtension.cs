@@ -141,9 +141,9 @@ namespace gotanda{
 		
 		public static int Count<T>(this IEnumerable<T> collection){
 			int result = 0;
-			foreach(var each in collection){
+			var iter = collection.GetEnumerator();
+			while(iter.MoveNext())
 				++result;
-			}
 			return result;
 		}
 		
