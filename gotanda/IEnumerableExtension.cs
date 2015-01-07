@@ -10,10 +10,10 @@ namespace gotanda{
 			}
 		}
 		
-		public static IEnumerable<R> Cast<T, R>(this IEnumerable<T> collection) {
-			return (IEnumerable<R>)collection;
+		public static IEnumerable<R> Cast<T, R>(this IEnumerable<T> collection) where T : class where R : class {
+			return Map(collection, e => e as R);
 		}
-
+		
 		public static void EachWithIndex<T>(this IEnumerable<T> collection, Action<T, int> action){
 			int i = 0;
 			foreach(var each in collection){
