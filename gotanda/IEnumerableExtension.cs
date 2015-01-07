@@ -9,6 +9,10 @@ namespace gotanda{
 				action(each);
 			}
 		}
+		
+		public static IEnumerable<R> Cast<T, R>(this IEnumerable<T> collection) {
+			return (IEnumerable<R>)collection;
+		}
 
 		public static void EachWithIndex<T>(this IEnumerable<T> collection, Action<T, int> action){
 			int i = 0;
@@ -75,10 +79,14 @@ namespace gotanda{
 					yield return eachElem;
 			}
 		}
+		
+		public static IEnumerable<T> Select<T>(this IEnumerable<T> collection, Predicate<T> pred){
+			return FindAll(collection, pred);
+		}
 
-		public static IEnumerable<T> Select<T>(this IEnumerable<T> collection, Predicate<T> func){
+		public static IEnumerable<T> FindAll<T>(this IEnumerable<T> collection, Predicate<T> pred){
 			foreach(var each in collection){
-				if(func(each))
+				if(pred(each))
 					yield return each;
 			}
 		}
