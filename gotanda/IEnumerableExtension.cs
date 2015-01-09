@@ -13,7 +13,7 @@ namespace gotanda{
 		public static IEnumerable<R> Cast<T, R>(this IEnumerable<T> collection) where T : class where R : class {
 			return Map(collection, e => e as R);
 		}
-		
+
 		public static void EachWithIndex<T>(this IEnumerable<T> collection, Action<T, int> action){
 			int i = 0;
 			foreach(var each in collection){
@@ -207,6 +207,15 @@ namespace gotanda{
 		public static IEnumerable<T> Type<T>(this IEnumerator enumerator){
 			while(enumerator.MoveNext())
 				yield return (T) enumerator.Current;
+		}
+		
+		public static IEnumerable<T> Skip<T>(this IEnumerable<T> collection, int count){
+			foreach(var each in collection){
+				if(count > 0)
+					count--;
+				else
+					yield return each;
+			}
 		}
 	}
 }
