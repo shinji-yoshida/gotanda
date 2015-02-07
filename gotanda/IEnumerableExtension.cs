@@ -22,6 +22,18 @@ namespace gotanda{
 			}
 		}
 
+		public static IEnumerable<TResult> SelectMany<TSource, TResult>(
+			this IEnumerable<TSource> source,
+			Func<TSource, IEnumerable<TResult>> selector
+			)
+		{
+			foreach(var each in source){
+				foreach(var result in selector(each)){
+					yield return result;
+				}
+			}
+		}
+
 		public static IEnumerable<R> Map<T, R>(this IEnumerable<T> collection, Func<T, R> func){
 			foreach(var each in collection){
 				yield return func(each);
