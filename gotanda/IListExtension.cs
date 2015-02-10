@@ -15,5 +15,14 @@ namespace gotanda{
 		public static T Last<T>(this IList<T> list){
 			return list[list.Count - 1];
 		}
+
+		public static T Sample<T>(this IList<T> list) {
+			Assertion._assert_(! list.IsEmpty());
+			return list[Random.Range(0, list.Count)];
+		}
+
+		public static IList<T> Copy<T>(this IList<T> list){
+			return new List<T>(list);
+		}
 	}
 }

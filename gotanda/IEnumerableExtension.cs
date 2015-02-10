@@ -9,12 +9,28 @@ namespace gotanda{
 				action(each);
 			}
 		}
+		
+		public static IEnumerable<R> Cast<T, R>(this IEnumerable<T> collection) where T : class where R : class {
+			return Map(collection, e => e as R);
+		}
 
 		public static void EachWithIndex<T>(this IEnumerable<T> collection, Action<T, int> action){
 			int i = 0;
 			foreach(var each in collection){
 				action(each, i);
 				++i;
+			}
+		}
+
+		public static IEnumerable<TResult> SelectMany<TSource, TResult>(
+			this IEnumerable<TSource> source,
+			Func<TSource, IEnumerable<TResult>> selector
+			)
+		{
+			foreach(var each in source){
+				foreach(var result in selector(each)){
+					yield return result;
+				}
 			}
 		}
 
@@ -75,10 +91,10 @@ namespace gotanda{
 					yield return eachElem;
 			}
 		}
-
-		public static IEnumerable<T> Select<T>(this IEnumerable<T> collection, Predicate<T> func){
+		
+		public static IEnumerable<T> FindAll<T>(this IEnumerable<T> collection, Predicate<T> pred){
 			foreach(var each in collection){
-				if(func(each))
+				if(pred(each))
 					yield return each;
 			}
 		}
@@ -98,12 +114,116 @@ namespace gotanda{
 			return false;
 		}
 		
+		public static bool Any(this IEnumerable<bool> collection){
+			foreach(var each in collection){
+				if(each)
+					return true;
+			}
+			return false;
+		}
+		
 		public static bool All<T>(this IEnumerable<T> collection, Predicate<T> func){
 			foreach(var each in collection){
 				if(! func(each))
 					return false;
 			}
 			return true;
+		}
+		
+		public static bool All(this IEnumerable<bool> collection){
+			foreach(var each in collection){
+				if(! each)
+					return false;
+			}
+			return true;
+		}
+		
+		public static bool None<T>(this IEnumerable<T> collection, Predicate<T> func){
+			return ! Any(collection, func);
+		}
+		
+		public static bool None(this IEnumerable<bool> collection){
+			return ! Any(collection);
+		}
+		
+		public static int Count<T>(this IEnumerable<T> collection, Predicate<T> func){
+			int result = 0;
+			foreach(var each in collection){
+				if(func(each))
+					++result;
+			}
+			return result;
+		}
+		
+		public static int Count<T>(this IEnumerable<T> collection){
+			int result = 0;
+			var iter = collection.GetEnumerator();
+			while(iter.MoveNext())
+				++result;
+			return result;
+		}
+		
+		public static T Find<T>(this IEnumerable<T> collection, Predicate<T> pred) where T : class{
+			foreach(var each in collection){
+				if(pred(each))
+					return each;
+			}
+			return null;
+		}
+		
+		public static T? FindStruct<T>(this IEnumerable<T> collection, Predicate<T> pred) where T : struct{
+			foreach(var each in collection){
+				if(pred(each))
+					return each;
+			}
+			return null;
+		}
+		
+		public static T? Max<T>(this IEnumerable<T> collection) where T : struct, IComparable<T>{
+			var iter = collection.GetEnumerator();
+			if(! iter.MoveNext())
+				return null;
+
+			var max = iter.Current;
+			while(iter.MoveNext()){
+				if(max.CompareTo(iter.Current) < 0)
+					max = iter.Current;
+			}
+
+			return max;
+		}
+
+		public static string Join<T>(this IEnumerable<T> collection, string seperator){
+			var iter = collection.GetEnumerator();
+			var result = "";
+			if(! iter.MoveNext())
+				return result;
+			result += iter.Current.ToString();
+			while(iter.MoveNext())
+				result += seperator + iter.Current.ToString();
+
+			return result;
+		}
+		
+		public static T Reduce<T>(this IEnumerable<T> collection, T init, Func<T, T, T> memoAndItemToReduced){
+			foreach(var each in collection){
+				init = memoAndItemToReduced(init, each);
+			}
+			return init;
+		}
+
+		public static IEnumerable<T> Type<T>(this IEnumerator enumerator){
+			while(enumerator.MoveNext())
+				yield return (T) enumerator.Current;
+		}
+		
+		public static IEnumerable<T> Skip<T>(this IEnumerable<T> collection, int count){
+			foreach(var each in collection){
+				if(count > 0)
+					count--;
+				else
+					yield return each;
+			}
 		}
 	}
 }
