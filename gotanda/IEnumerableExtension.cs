@@ -92,10 +92,6 @@ namespace gotanda{
 			}
 		}
 		
-		public static IEnumerable<T> Select<T>(this IEnumerable<T> collection, Predicate<T> pred){
-			return FindAll(collection, pred);
-		}
-
 		public static IEnumerable<T> FindAll<T>(this IEnumerable<T> collection, Predicate<T> pred){
 			foreach(var each in collection){
 				if(pred(each))
