@@ -93,6 +93,10 @@ namespace gotanda{
 		}
 		
 		public static IEnumerable<T> FindAll<T>(this IEnumerable<T> collection, Predicate<T> pred){
+			return Where(collection, pred);
+		}
+		
+		public static IEnumerable<T> Where<T>(this IEnumerable<T> collection, Predicate<T> pred){
 			foreach(var each in collection){
 				if(pred(each))
 					yield return each;
@@ -224,6 +228,26 @@ namespace gotanda{
 				else
 					yield return each;
 			}
+		}
+		
+		public static IEnumerable<T> Distinct<T,U>(this IEnumerable<T> collection, Func<T,U> compSelector){
+			HashSet<U> set = new HashSet<U>();
+			foreach(var each in collection){
+				var c = compSelector(each);
+				if(set.Contains(c))
+					continue;
+
+				set.Add(c);
+				yield return each;
+			}
+			set.Clear();
+		}
+		
+		public static T First<T>(this IEnumerable<T> collection){
+			foreach(var each in collection){
+				return each;
+			}
+			throw new IndexOutOfRangeException();
 		}
 	}
 }
