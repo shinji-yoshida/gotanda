@@ -249,5 +249,12 @@ namespace gotanda{
 			}
 			throw new IndexOutOfRangeException();
 		}
+
+		public static IEnumerable<T> Concat<T>(this IEnumerable<T> collection, IEnumerable<T> another) {
+			foreach(var each in collection)
+				yield return each;
+			foreach(var each in another)
+				yield return each;
+		}
 	}
 }
