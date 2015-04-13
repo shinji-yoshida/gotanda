@@ -175,6 +175,15 @@ namespace gotanda{
 			return null;
 		}
 		
+		public static IEnumerable<T> FindOne<T>(this IEnumerable<T> collection, Predicate<T> pred) where T : class{
+			foreach(var each in collection){
+				if(! pred(each))
+					continue;
+				yield return each;
+				yield break;
+			}
+		}
+		
 		public static T? FindStruct<T>(this IEnumerable<T> collection, Predicate<T> pred) where T : struct{
 			foreach(var each in collection){
 				if(pred(each))
@@ -248,6 +257,12 @@ namespace gotanda{
 				return each;
 			}
 			throw new IndexOutOfRangeException();
+		}
+		
+		public static T FirstOrNull<T>(this IEnumerable<T> collection) {
+			foreach(var each in collection)
+				return each;
+			return default(T);
 		}
 
 		public static IEnumerable<T> Concat<T>(this IEnumerable<T> collection, IEnumerable<T> another) {
