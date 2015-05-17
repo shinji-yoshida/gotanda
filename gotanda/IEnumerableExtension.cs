@@ -175,6 +175,14 @@ namespace gotanda{
 			return null;
 		}
 		
+		public static T Fetch<T>(this IEnumerable<T> collection, Predicate<T> pred) {
+			foreach(var each in collection){
+				if(pred(each))
+					return each;
+			}
+			throw new Exception("not found");
+		}
+		
 		public static IEnumerable<T> FindOne<T>(this IEnumerable<T> collection, Predicate<T> pred) where T : class{
 			foreach(var each in collection){
 				if(! pred(each))
