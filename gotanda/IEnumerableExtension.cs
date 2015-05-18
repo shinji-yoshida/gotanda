@@ -79,17 +79,11 @@ namespace gotanda{
 		}
 
 		public static IEnumerable<T> Flatten<T, U>(this IEnumerable<U> collection) where U : IEnumerable<T>{
-			foreach(var eachCollection in collection){
-				foreach(var eachElem in eachCollection)
-					yield return eachElem;
-			}
+			return collection.Concat<T, U>();
 		}
 		
 		public static IEnumerable<T> Flatten<T>(this IEnumerable<T[]> collection){
-			foreach(var eachCollection in collection){
-				foreach(var eachElem in eachCollection)
-					yield return eachElem;
-			}
+			return collection.Concat();
 		}
 		
 		public static IEnumerable<T> FindAll<T>(this IEnumerable<T> collection, Predicate<T> pred){
@@ -278,6 +272,27 @@ namespace gotanda{
 				yield return each;
 			foreach(var each in another)
 				yield return each;
+		}
+		
+		public static IEnumerable<T> Concat<T, U>(this IEnumerable<U> collection) where U : IEnumerable<T>{
+			foreach(var eachCollection in collection){
+				foreach(var eachElem in eachCollection)
+					yield return eachElem;
+			}
+		}
+		
+		public static IEnumerable<T> Concat<T>(this IEnumerable<IEnumerable<T>> collection) {
+			foreach(var eachCollection in collection){
+				foreach(var eachElem in eachCollection)
+					yield return eachElem;
+			}
+		}
+		
+		public static IEnumerable<T> Concat<T>(this IEnumerable<T[]> collection){
+			foreach(var eachCollection in collection){
+				foreach(var eachElem in eachCollection)
+					yield return eachElem;
+			}
 		}
 	}
 }
