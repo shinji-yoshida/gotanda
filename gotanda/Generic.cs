@@ -10,6 +10,11 @@ namespace gotanda{
 			return self;
 		}
 
+		public static T TapDebugLog<T>(this T self, Func<T, string> msg){
+			Debug.Log(msg(self));
+			return self;
+		}
+
 		public static void Swap<T>(ref T lhs, ref T rhs){
 			T temp;
 			temp = lhs;

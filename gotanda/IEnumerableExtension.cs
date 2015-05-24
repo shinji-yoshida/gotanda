@@ -79,20 +79,18 @@ namespace gotanda{
 		}
 
 		public static IEnumerable<T> Flatten<T, U>(this IEnumerable<U> collection) where U : IEnumerable<T>{
-			foreach(var eachCollection in collection){
-				foreach(var eachElem in eachCollection)
-					yield return eachElem;
-			}
+			return collection.Concat<T, U>();
 		}
 		
 		public static IEnumerable<T> Flatten<T>(this IEnumerable<T[]> collection){
-			foreach(var eachCollection in collection){
-				foreach(var eachElem in eachCollection)
-					yield return eachElem;
-			}
+			return collection.Concat();
 		}
 		
 		public static IEnumerable<T> FindAll<T>(this IEnumerable<T> collection, Predicate<T> pred){
+			return Where(collection, pred);
+		}
+		
+		public static IEnumerable<T> Where<T>(this IEnumerable<T> collection, Predicate<T> pred){
 			foreach(var each in collection){
 				if(pred(each))
 					yield return each;
@@ -171,6 +169,23 @@ namespace gotanda{
 			return null;
 		}
 		
+		public static T Fetch<T>(this IEnumerable<T> collection, Predicate<T> pred) {
+			foreach(var each in collection){
+				if(pred(each))
+					return each;
+			}
+			throw new Exception("not found");
+		}
+		
+		public static IEnumerable<T> FindOne<T>(this IEnumerable<T> collection, Predicate<T> pred) where T : class{
+			foreach(var each in collection){
+				if(! pred(each))
+					continue;
+				yield return each;
+				yield break;
+			}
+		}
+		
 		public static T? FindStruct<T>(this IEnumerable<T> collection, Predicate<T> pred) where T : struct{
 			foreach(var each in collection){
 				if(pred(each))
@@ -223,6 +238,60 @@ namespace gotanda{
 					count--;
 				else
 					yield return each;
+			}
+		}
+		
+		public static IEnumerable<T> Distinct<T,U>(this IEnumerable<T> collection, Func<T,U> compSelector){
+			HashSet<U> set = new HashSet<U>();
+			foreach(var each in collection){
+				var c = compSelector(each);
+				if(set.Contains(c))
+					continue;
+
+				set.Add(c);
+				yield return each;
+			}
+			set.Clear();
+		}
+		
+		public static T First<T>(this IEnumerable<T> collection){
+			foreach(var each in collection){
+				return each;
+			}
+			throw new IndexOutOfRangeException();
+		}
+		
+		public static T FirstOrNull<T>(this IEnumerable<T> collection) {
+			foreach(var each in collection)
+				return each;
+			return default(T);
+		}
+
+		public static IEnumerable<T> Concat<T>(this IEnumerable<T> collection, IEnumerable<T> another) {
+			foreach(var each in collection)
+				yield return each;
+			foreach(var each in another)
+				yield return each;
+		}
+		
+		public static IEnumerable<T> Concat<T, U>(this IEnumerable<U> collection) where U : IEnumerable<T>{
+			foreach(var eachCollection in collection){
+				foreach(var eachElem in eachCollection)
+					yield return eachElem;
+			}
+		}
+		
+		public static IEnumerable<T> Concat<T>(this IEnumerable<IEnumerable<T>> collection) {
+			foreach(var eachCollection in collection){
+				foreach(var eachElem in eachCollection)
+					yield return eachElem;
+			}
+		}
+		
+		public static IEnumerable<T> Concat<T>(this IEnumerable<T[]> collection){
+			foreach(var eachCollection in collection){
+				foreach(var eachElem in eachCollection)
+					yield return eachElem;
 			}
 		}
 	}
