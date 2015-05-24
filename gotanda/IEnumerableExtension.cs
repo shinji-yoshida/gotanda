@@ -124,7 +124,7 @@ namespace gotanda{
 			return null;
 		}
 
-		public static string Join<T>(this IEnumerable<T> collection, string seperator){
+		public static string JoinToSring<T>(this IEnumerable<T> collection, string seperator){
 			var iter = collection.GetEnumerator();
 			var result = "";
 			if(! iter.MoveNext())
