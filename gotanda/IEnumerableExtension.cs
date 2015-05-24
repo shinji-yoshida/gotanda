@@ -142,31 +142,6 @@ namespace gotanda{
 			}
 			return init;
 		}
-
-		public static IEnumerable<T> Type<T>(this IEnumerator enumerator){
-			while(enumerator.MoveNext())
-				yield return (T) enumerator.Current;
-		}
-		
-		public static IEnumerable<T> Distinct<T,U>(this IEnumerable<T> collection, Func<T,U> compSelector){
-			HashSet<U> set = new HashSet<U>();
-			foreach(var each in collection){
-				var c = compSelector(each);
-				if(set.Contains(c))
-					continue;
-
-				set.Add(c);
-				yield return each;
-			}
-			set.Clear();
-		}
-		
-		public static T First<T>(this IEnumerable<T> collection){
-			foreach(var each in collection){
-				return each;
-			}
-			throw new IndexOutOfRangeException();
-		}
 		
 		public static T FirstOrNull<T>(this IEnumerable<T> collection) {
 			foreach(var each in collection)
