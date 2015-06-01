@@ -42,7 +42,11 @@ namespace gotanda{
 		}
 		
 		public static List<R> BatchMap<T, R>(this IEnumerable<T> collection, Func<T, R> func){
-			return Map(collection, func).ToList();
+			return collection.SelectToList(func);
+		}
+		
+		public static List<R> SelectToList<T, R>(this IEnumerable<T> collection, Func<T, R> func){
+			return collection.Select(func).ToList();
 		}
 
 		public static IEnumerable<Pair<T, U>> Zip<T, U>(this IEnumerable<T> collection, IEnumerable<U> another)
