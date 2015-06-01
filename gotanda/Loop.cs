@@ -40,6 +40,21 @@ namespace gotanda {
 					throwException();
 			}
 		}
+		
+		public void Do(Action<Action> iterate) {
+			count = 0;
+			var broken = false;
+			Action breaker = () => broken = true;
+			while(continueCheck()){
+				iterate(breaker);
+				if(broken)
+					break;
+				
+				count++;
+				if(count >= limit)
+					throwException();
+			}
+		}
 
 		public class LimitedLoop {
 			int limit;
