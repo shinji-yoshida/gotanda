@@ -36,6 +36,12 @@ namespace gotanda{
 			p.x = x;
 			transform.localPosition = p;
 		}
+		
+		public static void SetLocalPositionY(this Transform transform, float y){
+			var p = transform.localPosition;
+			p.y = y;
+			transform.localPosition = p;
+		}
 
 		public static void SetPosition2D(this Transform transform, Vector2 p){
 			transform.position = new Vector3(p.x, p.y, transform.position.z);

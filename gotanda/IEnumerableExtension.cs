@@ -49,6 +49,10 @@ namespace gotanda{
 			return collection.Select(func).ToList();
 		}
 
+		public static HashSet<T> ToHashSet<T>(this IEnumerable<T> collection) {
+			return new HashSet<T>(collection);
+		}
+
 		public static IEnumerable<Pair<T, U>> Zip<T, U>(this IEnumerable<T> collection, IEnumerable<U> another)
 			where T : class where U : class
 		{
@@ -84,11 +88,11 @@ namespace gotanda{
 		
 		public static bool Any(this IEnumerable<bool> collection){
 			throw new Exception("this method does not work same as Linq");
-			foreach(var each in collection){
-				if(each)
-					return true;
-			}
-			return false;
+//			foreach(var each in collection){
+//				if(each)
+//					return true;
+//			}
+//			return false;
 		}
 		
 		public static bool None<T>(this IEnumerable<T> collection, Func<T, bool> func){
@@ -172,6 +176,10 @@ namespace gotanda{
 				foreach(var eachElem in eachCollection)
 					yield return eachElem;
 			}
+		}
+
+		public static string SequenceToString<T>(this IEnumerable<T> collection) {
+			return "[" + collection.JoinToSring(", ") + "]";
 		}
 	}
 }
