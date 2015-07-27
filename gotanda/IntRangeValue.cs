@@ -63,5 +63,9 @@ namespace gotanda{
 				return max - min;
 			}
 		}
+
+		public bool Includes (int val) {
+			return min <= val && val <= max;
+		}
 	}
 }
