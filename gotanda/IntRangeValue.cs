@@ -32,6 +32,10 @@ namespace gotanda{
 		}
 		
 		public IntRangeValue(int min, int max) : this(min, max, min){}
+
+		public IntRangeValue Copy () {
+			return new IntRangeValue(min, max, value);
+		}
 		
 		public int SelectNormalizedValue(float normalized){
 			this.value = Mathf.RoundToInt(min + Length * normalized);
@@ -51,6 +55,10 @@ namespace gotanda{
 			else
 				value = val;
 		}
+
+		public void AddValueClamped (int n) {
+			SelectValueClamped(this.value + n);
+		}
 		
 		public float NormalizedValue{
 			get {
@@ -66,6 +74,14 @@ namespace gotanda{
 
 		public bool Includes (int val) {
 			return min <= val && val <= max;
+		}
+
+		public bool IsMax () {
+			return value == max;
+		}
+		
+		public bool IsMin () {
+			return value == min;
 		}
 	}
 }
