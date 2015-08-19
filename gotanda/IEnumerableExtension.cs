@@ -178,6 +178,21 @@ namespace gotanda{
 			}
 		}
 
+		public static IEnumerable<IList<T>> Buffer<T>(this IEnumerable<T> collection, int count) {
+			Assertion._assert_(count > 0);
+
+			var buffer = new List<T>(count);
+			foreach(var each in collection) {
+				if(buffer.Count >= count){
+					yield return buffer;
+					buffer = new List<T>(count);
+				}
+				buffer.Add(each);
+			}
+
+			yield return buffer;
+		}
+
 		public static string SequenceToString<T>(this IEnumerable<T> collection) {
 			return "[" + collection.JoinToSring(", ") + "]";
 		}

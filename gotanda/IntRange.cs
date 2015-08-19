@@ -31,5 +31,10 @@ namespace gotanda {
 		IEnumerator IEnumerable.GetEnumerator () {
 			return this.GetEnumerator();
 		}
+
+		public override string ToString ()
+		{
+			return string.Format ("[IntRange: start={0}, end={1}]", start, end);
+		}
 	}
 }
