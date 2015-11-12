@@ -23,5 +23,10 @@ namespace gotanda{
 				return;
 			throw new UnityException(message);
 		}
+		
+		[System.Diagnostics.Conditional("UNITY_EDITOR")]
+		public static void _only_editor_(System.Action action){
+			action ();
+		}
 	}
 }

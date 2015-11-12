@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace gotanda{
 	public static class TransformExtension {
@@ -45,6 +46,10 @@ namespace gotanda{
 
 		public static void SetPosition2D(this Transform transform, Vector2 p){
 			transform.position = new Vector3(p.x, p.y, transform.position.z);
+		}
+
+		public static List<Transform> GetChildren(this Transform transform) {
+			return transform.childCount.Times().SelectToList(i => transform.GetChild(i));
 		}
 	}
 }
