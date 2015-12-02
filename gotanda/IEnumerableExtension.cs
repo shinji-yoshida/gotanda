@@ -19,6 +19,16 @@ namespace gotanda{
 			}
 		}
 
+		public static int FindIndex<T>(this IEnumerable<T> collection, Predicate<T> pred) {
+			int i = 0;
+			foreach(var each in collection){
+				if(pred(each))
+					return i;
+				++i;
+			}
+			return -1;
+		}
+
 		public static IEnumerable<R> Map<T, R>(this IEnumerable<T> collection, Func<T, R> func){
 			foreach(var each in collection){
 				yield return func(each);
