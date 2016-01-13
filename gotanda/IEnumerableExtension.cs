@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System;
 using System.Collections.Generic;
-using UniLinq;
+using System.Linq;
 
 namespace gotanda{
 	public static class IEnumerableExtension {
@@ -86,7 +86,7 @@ namespace gotanda{
 		}
 		
 		public static IEnumerable<T> FindAll<T>(this IEnumerable<T> collection, Func<T, bool> pred){
-			return UniLinq.Enumerable.Where(collection, pred);
+			return System.Linq.Enumerable.Where(collection, pred);
 		}
 		
 		public static IEnumerable<T> Reject<T>(this IEnumerable<T> collection, Predicate<T> func){
@@ -106,7 +106,7 @@ namespace gotanda{
 		}
 		
 		public static bool None<T>(this IEnumerable<T> collection, Func<T, bool> func){
-			return ! UniLinq.Enumerable.Any(collection, func);
+			return ! System.Linq.Enumerable.Any(collection, func);
 		}
 		
 		public static T Find<T>(this IEnumerable<T> collection, Predicate<T> pred) where T : class{
