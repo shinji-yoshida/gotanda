@@ -4,26 +4,26 @@ using UnityEngine;
 namespace gotanda
 {
 	//  based on http://naichilab.blogspot.jp/2013/11/unitycrgbhsv.html 
-	public class HSVColor
+	public struct HSVColor
 	{
-		private int h;
-		private int s;
-		private int v;
+		int h;
+		int s;
+		int v;
+		int a;
 
-		public HSVColor (int h, int s, int v)
+		public HSVColor (int h, int s, int v, int a)
 		{
 			this.h = h;
 			this.s = s;
 			this.v = v;
+			this.a = a;
 		}
 
-		public static HSVColor FromRGBColor(Color c)
-		{
-			return new HSVColor(hOf(c), sOf(c), vOf(c));
+		public static HSVColor FromRGBColor(Color c) {
+			return new HSVColor(hOf(c), sOf(c), vOf(c), aOf(c));
 		}
 
-		public static int hOf(Color c)
-		{
+		public static int hOf(Color c) {
 			float min = Mathf.Min(new float[]{c.r, c.g, c.b});
 			float max = Mathf.Max(new float[]{c.r, c.g, c.b});
 			
@@ -40,8 +40,7 @@ namespace gotanda
 			return (int)Mathf.Round(h);
 		}
 
-		public static int sOf(Color c)
-		{
+		public static int sOf(Color c) {
 			float min = Mathf.Min(new float[]{c.r, c.g, c.b});
 			float max = Mathf.Max(new float[]{c.r, c.g, c.b});
 			
@@ -49,23 +48,23 @@ namespace gotanda
 			return (int)(255 * (max - min) / max);
 		}
 
-		public static int vOf(Color c)
-		{
+		public static int vOf(Color c) {
 			return (int)(255.0f * Mathf.Max(new float[]{c.r, c.g, c.b}));
 		}
 
-		public static implicit operator Color(HSVColor c){
-			return InnerToColor((float)c.H, (float)c.S / 255.0f, (float)c.V / 255.0f);
+		public static int aOf(Color c) {
+			return (int)(255f * c.a);
 		}
 
-		private static Color InnerToColor(float h, float s, float v)
-		{
-			Color resColor = Color.clear;
-			
+		public static implicit operator Color(HSVColor c){
+			return InnerToColor((float)c.H, (float)c.S / 255.0f, (float)c.V / 255.0f, c.a / 255.0f);
+		}
+
+		static Color InnerToColor(float h, float s, float v, float a) {
 			if (s == 0.0) //Gray
 			{
 				int rgb = Convert.ToInt16((float)(v * 255));
-				resColor = new Color(rgb, rgb, rgb);
+				return new Color(rgb, rgb, rgb);
 			}
 			else
 			{
@@ -91,22 +90,32 @@ namespace gotanda
 				default: break;
 				}
 				
-				resColor = new Color(r,g,b);
+				return new Color(r,g,b,a);
 			}
-			
-			return resColor;
 		}
 
 		public HSVColor AddH(int n){
 			if(n < 0)
 				n += 360 * Mathf.CeilToInt(-n / 360f);
 			n = (h + n) % 360;
-			return new HSVColor(n, s, v);
+			return new HSVColor(n, s, v, a);
+		}
+
+		public HSVColor Plus(HSVColor hsv) {
+			return new HSVColor (this.h + hsv.h, this.s + hsv.s, this.v + hsv.v, this.a + hsv.a);
+		}
+
+		public HSVColor Minus(HSVColor hsv) {
+			return new HSVColor (this.h - hsv.h, this.s - hsv.s, this.v - hsv.v, this.a - hsv.a);
+		}
+
+		public HSVColor Mult(float s) {
+			return new HSVColor (Mathf.RoundToInt(this.h * s), Mathf.RoundToInt(this.s * s), Mathf.RoundToInt(this.v * s), Mathf.RoundToInt(this.a * s));
 		}
 
 		public HSVColor ChangeH (int newH)
 		{
-			return new HSVColor(newH, s, v);
+			return new HSVColor(newH, s, v, a);
 		}
 
 		public int H {

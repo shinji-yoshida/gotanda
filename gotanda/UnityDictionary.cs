@@ -51,6 +51,9 @@ namespace gotanda {
 		public void Apply () {
 			list = ConvertDictionaryToList(table);
 		}
+		public void Rebuild() {
+			table = ConvertListToDictionary (list);
+		}
 		
 		static Dictionary<TKey, TValue> ConvertListToDictionary (List<TPair> list) {
 			Dictionary<TKey, TValue> dic = new Dictionary<TKey, TValue> ();
